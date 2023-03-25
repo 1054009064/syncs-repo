@@ -1,0 +1,53 @@
+name: Sync openwrt repository
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: 0 */8 * * *
+  repository_dispatch:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync_openwrt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Space cleanup
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          df -hT
+          sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          sudo -E apt-get -qq update
+          sudo -E apt-get -qq autoremove --purge
+          sudo -E apt-get -qq install --only-upgrade git
+          sudo -E systemctl daemon-reload
+          sudo -E apt -qq autoremove --purge
+          sudo -E apt clean
+
+      - name: Checkout git repository
+        uses: actions/checkout@main
+        with:
+          repository: ${{ secrets.GIT_USERNAME }}/openwrt
+          token: ${{ secrets.CI_LINUX }}
+          fetch-depth: 2
+
+      - name: Configure git
+        run: |
+          git --version
+          git config --global user.email "${{ secrets.GIT_EMAIL }}"
+          git config --global user.name "${{ secrets.GIT_USERNAME }}"
+
+      - name: Add remotes repository
+        run: ${{ secrets.OPENWRT_ARR }}
+
+      - name: Force sync branches
+        run: ${{ secrets.OPENWRT_FSB }}
+
+      - name: Last check space usage
+        run: df -hT
