@@ -2,8 +2,8 @@ name: Sync linux repository
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - '.github/workflows/sync-linux.yml'
   schedule:
     - cron: 0 */8 * * *
   repository_dispatch:
