@@ -9,9 +9,6 @@ on:
   repository_dispatch:
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   sync_linux:
     runs-on: ubuntu-latest
