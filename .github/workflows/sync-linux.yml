@@ -5,7 +5,7 @@ on:
     paths:
       - '.github/workflows/sync-linux.yml'
   schedule:
-    - cron: 0 */8 * * *
+    - cron: 0 */4 * * *
   repository_dispatch:
   workflow_dispatch:
 
