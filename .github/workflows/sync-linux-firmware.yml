@@ -1,0 +1,37 @@
+name: Sync linux-firmware repository
+
+on:
+  push:
+    paths:
+      - '.github/workflows/sync-linux-firmware.yml'
+  schedule:
+    - cron: 0 0 * * *
+  repository_dispatch:
+  workflow_dispatch:
+
+jobs:
+  sync_linux_firmware:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@main
+        with:
+          repository: ${{ secrets.GIT_USERNAME }}/linux-firmware
+          token: ${{ secrets.CI_LINUX }}
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git --version
+          git config --global user.email "${{ secrets.GIT_EMAIL }}"
+          git config --global user.name "${{ secrets.GIT_USERNAME }}"
+
+      - name: Add remotes repository
+        run: ${{ secrets.LINUX_FIRMWARE_ARR }}
+
+      - name: Force sync branches
+        run: ${{ secrets.LINUX_FIRMWARE_FSB }}
+
+      - name: Last check space usage
+        run: df -hT
