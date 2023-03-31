@@ -6,7 +6,6 @@ on:
       - '.github/workflows/sync-openwrt.yml'
   schedule:
     - cron: 0 */4 * * *
-  repository_dispatch:
   workflow_dispatch:
 
 jobs:
