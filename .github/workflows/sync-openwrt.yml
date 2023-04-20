@@ -16,7 +16,7 @@ jobs:
       - name: Checkout git repository
         uses: actions/checkout@main
         with:
-          repository: ${{ secrets.GIT_USERNAME }}/openwrt
+          repository: 1054009064/openwrt
           token: ${{ secrets.CI_LINUX }}
           fetch-depth: 0
 
