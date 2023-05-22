@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  sync_linux_firmware:
+  linux_firmware:
     runs-on: ubuntu-latest
 
     steps:

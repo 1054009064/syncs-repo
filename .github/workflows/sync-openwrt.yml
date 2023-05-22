@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  sync_openwrt:
+  openwrt:
     runs-on: ubuntu-latest
 
     steps:
