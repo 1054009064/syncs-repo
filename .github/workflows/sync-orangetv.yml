@@ -1,0 +1,36 @@
+name: Sync OrangeTV repository
+
+on:
+  push:
+    paths:
+      - '.github/workflows/sync-orangetv.yml'
+  schedule:
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
+
+jobs:
+  moontv:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@main
+        with:
+          repository: 1054009064/OrangeTV
+          token: ${{ secrets.CI_LINUX }}
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git --version
+          git config --global user.email "${{ secrets.GIT_EMAIL }}"
+          git config --global user.name "${{ secrets.GIT_USERNAME }}"
+
+      - name: Add remotes repository
+        run: ${{ secrets.ORANGETV_ARR }}
+
+      - name: Force sync branches
+        run: ${{ secrets.ORANGETV_FSB }}
+
+      - name: Last check space usage
+        run: df -hT
