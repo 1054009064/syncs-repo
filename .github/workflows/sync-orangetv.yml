@@ -5,7 +5,7 @@ on:
     paths:
       - '.github/workflows/sync-orangetv.yml'
   schedule:
-    - cron: "0 */12 * * *"
+    - cron: "0 */4 * * *"
   workflow_dispatch:
 
 jobs:
